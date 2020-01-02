@@ -36,7 +36,24 @@ router.get('/', async (ctx,next) => {
     let temp = thArr2.find('th')[i].children[0].data
     obj2[temp] = isNaN(tdArr2.find('td')[i].children[0].data) ? tdArr2.find('td')[i].children[0].data : tdArr2.find('td')[i].children[0].data*1
   }
-  ctx.body = [obj1,obj2]
+  let arr = [{
+    currency: 'USD',
+    exchangeRate: obj1['中行折算价'],
+    buyingRate: obj1['现汇买入价'],
+    sellingRate: obj1['现汇卖出价'],
+    centralParity: ((obj1['现汇买入价']+obj1['现汇卖出价'])/2).toFixed(2)*1
+  }, {
+    currency: 'HKD',
+    exchangeRate: obj2['中行折算价'],
+    buyingRate: obj2['现汇买入价'],
+    sellingRate: obj2['现汇卖出价'],
+    centralParity: ((obj2['现汇买入价']+obj2['现汇卖出价'])/2).toFixed(2)*1
+  }]
+  ctx.body = {
+    code: 200,
+    status: 'success',
+    data: arr
+  }
 })
 
 module.exports = router
